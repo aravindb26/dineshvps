@@ -1,0 +1,9 @@
+all.accor.com
+attente.accor.com
+restaurantsandbars.accor.com
+ptk.accorhotels.com
+loyalty.accor.com
+developer.accor.com
+api.accorhotels.ws
+api.accor.com
+all.com

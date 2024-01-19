@@ -1,0 +1,35 @@
+#!/bin/bash
+
+    printf "Collecting waybackurls" | notify --silent -p discord -id "crawl5"
+
+    mkdir wayback
+    cd wayback
+    
+    printf "Running waybackurls" | notify --silent -p discord -id "crawl5"
+    cat ../subdomains/redbull-bug-bounty-scope-rb-only.txt | waybackurls | anew wayback.txt
+    
+    cat ../subdomains/redbull-bug-bounty-scope-rb-only.txt | gauplus | tee gau.txt
+
+    cat wayback.txt gau.txt | sort -u | tee urls.txt
+
+   mkdir imp_wayback
+wayback_keywords=("password" "secret" "token" "access" "pwd" "api" "email=" "\.txt$" "aws" "admin" "\.js$" "config" "dashboard" "oauth" "\.xls$" "\.xlsx$" "\.sql$" "\.doc$" "\.docx$" "\.pptx$" "\.php$" "\.asp$" "\.aspx$" "\.py$" "\.conf$" "\.config$" "\.db$" "\.rb$" "\.cache$" "\.cgi$" "\.inc$" "\.jar$" "\.lock$" "\.log$" "\.sql.gz$" "\.sql.zip$" "\.sql.tar.gz$" "\.sql.tar$" "\.swp$" "\.tar$" "\.tar.bz2$" "\.wadl$" "\.zip$" "\.secret$" "\.yml$" "\.gz$" "\.action$" "\.do$" "\.xml$" "\.phtml$" "\.yaml$" "\.reg$" "\.ini$" "\.ora$" "\.env$" "\.inf$" "\.rdp$" "\.cnf$" "\.csv$" "\.rar$" "\.swp$")
+
+for keyword in "${wayback_keywords[@]}"; do
+   filename=$(echo "$keyword" | sed 's/[^a-zA-Z0-9]/_/g; s/^_//; s/_$//; s/_\([^_]*\)_/\1/')
+   result=$(grep -E "$keyword" urls.txt)
+    
+   if [ -n "$result" ]; then
+        echo "$result" | tee "imp_wayback/${filename}.txt"
+   fi
+done
+
+cd imp_wayback && wc * | notify --silent -p discord -id "crawl5"
+
+cat ../urls.txt | httpx -mc 200 -ct | grep application/json | notify --silent -p discord -id "crawl5"
+
+python3 $HOME/SecretFinder/SecretFinder.py -i _js.txt
+
+cd ..
+
+      printf "Wayback work is completed" | notify --silent -p discord -id "crawl5"

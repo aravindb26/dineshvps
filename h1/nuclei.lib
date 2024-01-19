@@ -1,0 +1,24 @@
+#!/bin/bash
+
+      nuclei -up | notify --silent -p discord -id "crawl2_a"
+      printf "Updating templates :D" | notify --silent -p discord -id "crawl2_a"
+      nuclei --update-templates --silent
+      printf "Templates are updated... Let's go..." | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/http/cves/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/http/default-logins/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/network/exposures/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/http/misconfiguration/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/http/takeovers/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/http/vulnerabilities/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/http/exposed-panels/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/headless/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/workflows/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/http/cnvd/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/http/technologies/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/http/fuzzing/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/network/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/dns/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/http/misconfiguration/jenkins/ | notify --silent -p discord -id "crawl2_a"
+      nuclei -l subdomains/actual_Subdomains.txt -t $HOME/nuclei-templates/shodan/ | notify --silent -p discord -id "crawl2_a"
+      printf "Nuclei work is completed" | notify --silent -p discord -id "crawl2_a"
+
